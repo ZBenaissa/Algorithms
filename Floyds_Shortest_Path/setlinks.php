@@ -35,7 +35,7 @@
 		    $this->initialMatrix = $matrix;
 		    $this->finalP = $finalP;
 		    $this->nodes = $nodes;
-		    $this->print_array = array_fill(0, count($nodes)*(count($nodes)-1), array_fill(0, count($nodes), 0)); 
+		    $this->print_array = array_fill(0, count($nodes)*(count($nodes)-1), array_fill(0, count($nodes), -1)); 
     	}
 	
     	public function floyd(){
@@ -54,13 +54,15 @@
     	}
     	public function path($q, $r){
             #print "v".$q." --&gt ";
-            print $this->nodes[$q-1]." --&gt ";
-            $this->print_array[$this->count-1][$this->col] = $this->nodes[$q-1];
+            #print $this->nodes[$q-1]." --&gt ";
+            #$this->print_array[$this->count-1][$this->col] = $this->nodes[$q-1];
+            $this->print_array[$this->count-1][$this->col] = $q-1;
             $this->col++;
             $this->path2($q-1,$r-1);
             #print "v".$r;
-            print $this->nodes[$r-1];
-            $this->print_array[$this->count-1][$this->col] = $this->nodes[$r-1];
+            #print $this->nodes[$r-1];
+            #$this->print_array[$this->count-1][$this->col] = $this->nodes[$r-1];
+            $this->print_array[$this->count-1][$this->col] = $r-1;
             echo "<p></p>";
         
         }
@@ -68,8 +70,9 @@
             if ($this->finalP[$q][$r] != 0){
                 $this->path2($q,$this->finalP[$q][$r]-1);
                 #print "v".$this->finalP[$q][$r]." --&gt ";
-                print $this->nodes[$this->finalP[$q][$r]-1]." --&gt ";
-                $this->print_array[$this->count-1][$this->col] = $this->nodes[$this->finalP[$q][$r]-1];
+               # print $this->nodes[$this->finalP[$q][$r]-1]." --&gt ";
+                #$this->print_array[$this->count-1][$this->col] = $this->nodes[$this->finalP[$q][$r]-1];
+                $this->print_array[$this->count-1][$this->col] = $this->finalP[$q][$r]-1;
                 $this->col++;
                 $this->path2($this->finalP[$q][$r]-1, $r);
             }
@@ -83,12 +86,12 @@
                         continue;
                     }
                     else{
-                        if ($this->count < 10){
-                            print $this->count.".)  ";
-                        }
-                        else{
-                            print $this->count.".) ";
-                        }
+                        #if ($this->count < 10){
+                           # print $this->count.".)  ";
+                       # }
+                       # else{
+                       #     print $this->count.".) ";
+                       # }
                         $this->path($i,$j);
                         $this->count++;
                         $this->col = 0;
@@ -103,13 +106,41 @@
 				}
 				echo "<p></p>";
 			}
-		}			
+		}
+		public function prt2(){
+			$count = 1;
+			for ($i=0;$i<count($this->print_array);$i++){
+				if ($count < 10){
+					print " &nbsp ".$count.".) ";
+					#echo $count.".) ";
+				}
+				else{
+					print $count.".) ";
+					#echo $count.".) ";
+				}
+				print $this->nodes[$this->print_array[$i][0]];
+				$total = 0;
+				for ($j=1;$j<count($this->print_array[$i]);$j++){
+					$start = $this->print_array[$i][$j-1];
+					$end = $this->print_array[$i][$j];
+					if ($end >= 0 ){
+						print " -- ".$this->finalMatrix[$start][$end]." -- &gt ".$this->nodes[$this->print_array[$i][$j]];
+						$total += $this->finalMatrix[$start][$end];
+					}
+				}
+				echo "<p></p>";
+				print " &nbsp &nbsp Total: ".$total;
+				echo "<p>&nbsp</p>";
+				echo "<p></p>";
+				$count++;
+			}
+		}
 	
     }
     $m1 = new FloydsAlgo($links,$p_array,$nodes);
     $m1->floyd();
     $m1->pathPrint();    
-	$m1->prt();
+	$m1->prt2();
 
 
 ?>
