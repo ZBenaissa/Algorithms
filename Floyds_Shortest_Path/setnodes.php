@@ -4,7 +4,8 @@
 </head>
 
 <body>
-
+<h1>Please set the weights of the verticies for the node pairs below</h1>
+<h2>If there is no vertice between a node pair, please type -1</h2>
 <?php
 $numbnodes = $_POST["numbnodes"];
 $nodes = $_POST["nodes"];

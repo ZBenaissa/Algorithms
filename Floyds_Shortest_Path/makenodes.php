@@ -4,7 +4,7 @@
 </head>
 
 <body>
-
+<h1>Please give names for your nodes</h1>
 <?php
 $numbnodes = $_POST["numbnodes"];
 echo "<form method='post' action='setnodes.php'>";
